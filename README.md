@@ -1,7 +1,7 @@
 # CakePHP 5 Driver for Oracle Database
 
-[![Downloads](https://poser.pugx.org/portal89/cakephp5-oracle-driver/d/total.png)](https://packagist.org/packages/portal89/cakephp5-oracle-driver)
-[![Latest Version](https://poser.pugx.org/portal89/cakephp5-oracle-driver/v/stable.png)](https://packagist.org/packages/portal89/cakephp5-oracle-driver)
+[![Downloads](https://poser.pugx.org/ioigoume/cakephp5-oracle-driver/d/total.png)](https://packagist.org/packages/ioigoume/cakephp5-oracle-driver)
+[![Latest Version](https://poser.pugx.org/ioigoume/cakephp5-oracle-driver/v/stable.png)](https://packagist.org/packages/ioigoume/cakephp5-oracle-driver)
 
 
 ## Installation
@@ -12,7 +12,7 @@ You can install this plugin into your CakePHP application using
 The recommended way to install Composer packages is:
 
 ```
-composer require portal89/cakephp5-oracle-driver
+composer require ioigoume/cakephp5-oracle-driver
 ```
 
 
@@ -110,7 +110,7 @@ Roadmap
 Support
 -------
 
-For bugs and feature requests, please use the [issues](https://github.com/portal89/cakephp5-oracle-driver/issues) section of this repository.
+For bugs and feature requests, please use the [issues](https://github.com/ioigoume/cakephp5-oracle-driver/issues) section of this repository.
 
 License
 -------
