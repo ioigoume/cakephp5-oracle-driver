@@ -1,9 +1,5 @@
 # CakePHP 5 Driver for Oracle Database
 
-[![Downloads](https://poser.pugx.org/ioigoume/cakephp5-oracle-driver/d/total.png)](https://packagist.org/packages/ioigoume/cakephp5-oracle-driver)
-[![Latest Version](https://poser.pugx.org/ioigoume/cakephp5-oracle-driver/v/stable.png)](https://packagist.org/packages/ioigoume/cakephp5-oracle-driver)
-
-
 ## Installation
 
 You can install this plugin into your CakePHP application using
@@ -26,14 +22,14 @@ Ensure the Oracle Plugin is loaded in your src/Application.php file
     {
         parent::bootstrap();
 
-        $this->addPlugin(\Portal89\OracleDriver\Plugin::class, ['bootstrap' => true]);
+        $this->addPlugin(\Ioigoume\OracleDriver\Plugin::class, ['bootstrap' => true]);
     }
 ```
 
 
 ## Requirements
 
-- CakePHP 5.0+
+- CakePHP 5.2+
 - an Oracle PHP extension
   - OCI8 (PHP extension built with PHP)
   - PDO_OCI (PHP extension built with PHP)
@@ -55,9 +51,9 @@ Here is an example datasource configuration:
 return [
     'Datasources' => [
         'default' => [
-            'className' => 'Portal89\OracleDriver\Database\OracleConnection',
-            'driver' => 'Portal89\OracleDriver\Database\Driver\OracleOCI', # For OCI8
-            #'driver' => 'Portal89\\OracleDriver\\Database\\Driver\\OraclePDO', # For PDO_OCI
+            'className' => 'Ioigoume\OracleDriver\Database\OracleConnection',
+            'driver' => 'Ioigoume\OracleDriver\Database\Driver\OracleOCI', # For OCI8
+            #'driver' => 'Ioigoume\\OracleDriver\\Database\\Driver\\OraclePDO', # For PDO_OCI
             'persistent' => true,           // Database persistent connection between http requests
             'host' => 'oracle11g',          // Database host name or IP address
             //'port' => 'nonstandard_port', // Database port number (default: 1521)
@@ -91,7 +87,7 @@ system-wide `tnsnames.ora` file.
 
 The above array format is translated into Oracle's
 [Easy Connection Naming][oracle-ecn]. You can find the logic for this in
-`\Portal89\OracleDriver\Database\Driver\OracleBase::getDSN()`.
+`\Ioigoume\OracleDriver\Database\Driver\OracleBase::getDSN()`.
 
 [oracle-ecn]: https://docs.oracle.com/cd/B19306_01/network.102/b14212/naming.htm#sthref783
 
