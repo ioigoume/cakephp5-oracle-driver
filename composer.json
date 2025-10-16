@@ -1,0 +1,71 @@
+{
+    "name": "ioigoume/cakephp5-oracle-driver",
+    "description": "CakePHP 5 Driver for Oracle Database",
+    "type": "cakephp-plugin",
+    "keywords": [
+        "cakephp",
+        "oracle",
+        "database",
+        "driver"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ioannis Igoumenos",
+            "role": "Author, developer, bug eliminator"
+        }
+    ],
+    "config": {
+        "preferred-install": "src",
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "require": {
+        "php": ">=8.1",
+        "cakephp/cakephp": "^5.2",
+        "cakephp/chronos": "^3.1",
+        "ext-pdo": "*"
+    },
+    "require-dev": {
+        "cakephp/cakephp-codesniffer": "^5.0",
+        "phpunit/phpunit": "^10.0"
+    },
+    "repositories": [],
+    "autoload": {
+        "psr-4": {
+            "Ioigoume\\OracleDriver\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ioigoume\\OracleDriver\\Test\\": "tests",
+            "Cake\\Test\\": "vendor/cakephp/cakephp/tests",
+            "Company\\TestPluginThree\\Test\\": "vendor/cakephp/cakephp/tests/test_app/Plugin/Company/TestPluginThree/tests",
+            "TestApp\\": "vendor/cakephp/cakephp/tests/test_app/TestApp",
+            "TestPlugin\\": "vendor/cakephp/cakephp/tests/test_app/Plugin/TestPlugin/src",
+            "TestPlugin\\Test\\": "vendor/cakephp/cakephp/tests/test_app/Plugin/TestPlugin/tests",
+            "TestPluginTwo\\": "vendor/cakephp/cakephp/tests/test_app/Plugin/TestPluginTwo/src",
+            "PluginJs\\": "vendor/cakephp/cakephp/tests/test_app/Plugin/PluginJs/src"
+        }
+    },
+    "scripts": {
+        "check": [
+            "@test"
+        ],
+        "cs-check": "phpcs -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/",
+        "cs-fix": "phpcbf --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/",
+        "test": "phpunit --stderr",
+
+        "stan": "phpstan analyse src/",
+        "psalm": "php vendor/psalm/phar/psalm.phar --show-info=false src/ ",
+        "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^0.12.0 psalm/phar:^3.7 && mv composer.backup composer.json",
+        "stan-rebuild-baseline": "phpstan analyse --configuration phpstan.neon --error-format baselineNeon src/ > phpstan-baseline.neon",
+        "psalm-rebuild-baseline": "php vendor/psalm/phar/psalm.phar --show-info=false  --set-baseline=psalm-baseline.xml  src/",
+        "rector": "rector process src/",
+        "rector-setup": "cp composer.json composer.backup && composer require --dev rector/rector:^0.7 && mv composer.backup composer.json",
+
+        "single-test": "phpunit --stderr ",
+        "coverage-test": "phpunit --stderr --coverage-clover=clover.xml"
+    }
+}
