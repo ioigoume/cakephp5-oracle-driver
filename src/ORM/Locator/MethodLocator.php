@@ -121,7 +121,7 @@ class MethodLocator implements LocatorInterface
      * @param array $options The options you want to build the method with.
 
      *   If a method has already been loaded the options will be ignored.
-     * @return \Portal89\OracleDriver\ORM\Method
+     * @return \Ioigoume\OracleDriver\ORM\Method
      * @throws \RuntimeException When you try to configure an alias that already exists.
      */
     public function get($alias, array $options = [])
@@ -199,7 +199,7 @@ class MethodLocator implements LocatorInterface
      * Wrapper for creating method instances
      *
      * @param array $options The alias to check for.
-     * @return \Portal89\OracleDriver\ORM\Method
+     * @return \Ioigoume\OracleDriver\ORM\Method
      */
     protected function _create(array $options)
     {

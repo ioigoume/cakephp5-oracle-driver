@@ -27,7 +27,7 @@ class MethodRegistryTest extends TestCase
     /**
      * Original MethodLocator.
      *
-     * @var \Portal89\OracleDriver\ORM\Locator\LocatorInterface
+     * @var \Ioigoume\OracleDriver\ORM\Locator\LocatorInterface
      */
     protected $_originalLocator;
 
@@ -57,7 +57,7 @@ class MethodRegistryTest extends TestCase
     /**
      * Sets and returns mock LocatorInterface instance.
      *
-     * @return \Portal89\OracleDriver\ORM\Locator\LocatorInterface
+     * @return \Ioigoume\OracleDriver\ORM\Locator\LocatorInterface
      */
     protected function _setMockLocator()
     {

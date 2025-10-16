@@ -138,6 +138,6 @@ if ($isCli) {
     (new Cake\Error\ErrorHandler(Cake\Core\Configure::read('Error')))->register();
 }
 \Cake\Routing\Router::reload();
-$application = new \Portal89\OracleDriver\Test\App\Application(CONFIG);
+$application = new \Ioigoume\OracleDriver\Test\App\Application(CONFIG);
 $application->bootstrap();
 $application->pluginBootstrap();

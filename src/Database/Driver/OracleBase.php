@@ -19,13 +19,14 @@ use Cake\Database\StatementInterface;
 use Cake\Database\ValueBinder;
 use Cake\Http\Exception\NotImplementedException;
 use Cake\Log\Log;
-use Portal89\OracleDriver\Config\ConfigTrait;
-use Portal89\OracleDriver\Database\Dialect\OracleDialectTrait;
-use Portal89\OracleDriver\Database\Oracle12Compiler;
-use Portal89\OracleDriver\Database\OracleCompiler;
-use Portal89\OracleDriver\Database\Statement\OracleStatement;
+use Ioigoume\OracleDriver\Config\ConfigTrait;
+use Ioigoume\OracleDriver\Database\Dialect\OracleDialectTrait;
+use Ioigoume\OracleDriver\Database\Oracle12Compiler;
+use Ioigoume\OracleDriver\Database\OracleCompiler;
+use Ioigoume\OracleDriver\Database\Statement\OracleStatement;
 use PDO;
 
+#[\AllowDynamicProperties]
 abstract class OracleBase extends Driver
 {
     use ConfigTrait;
@@ -342,8 +343,8 @@ abstract class OracleBase extends Driver
     /**
      * Wrap statement into cakephp statements to provide additional functionality.
      *
-     * @param \Portal89\OracleDriver\Database\Driver\Statement $statement Original statement to wrap.
-     * @return \Portal89\OracleDriver\Database\Statement\OracleStatement
+     * @param \Ioigoume\OracleDriver\Database\Driver\Statement $statement Original statement to wrap.
+     * @return \Ioigoume\OracleDriver\Database\Statement\OracleStatement
      */
     protected function _wrapStatement($statement)
     {

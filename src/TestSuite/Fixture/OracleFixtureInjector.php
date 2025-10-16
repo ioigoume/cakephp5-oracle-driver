@@ -28,7 +28,7 @@ class OracleFixtureInjector implements TestListener
     /**
      * The instance of the fixture manager to use
      *
-     * @var \Portal89\OracleDriver\TestSuite\Fixture\OracleFixtureManager
+     * @var \Ioigoume\OracleDriver\TestSuite\Fixture\OracleFixtureManager
      */
     protected $_fixtureManager;
 
@@ -42,7 +42,7 @@ class OracleFixtureInjector implements TestListener
     /**
      * Constructor. Save internally the reference to the passed fixture manager
      *
-     * @param \Portal89\OracleDriver\TestSuite\Fixture\OracleFixtureManager $manager The fixture manager
+     * @param \Ioigoume\OracleDriver\TestSuite\Fixture\OracleFixtureManager $manager The fixture manager
      */
     public function __construct(OracleFixtureManager $manager)
     {

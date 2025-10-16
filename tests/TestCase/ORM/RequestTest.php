@@ -139,7 +139,7 @@ class RequestTest extends TestCase
      */
     public function testConstructor()
     {
-        $request = $this->getMockBuilder('\Portal89\OracleDriver\ORM\Request')
+        $request = $this->getMockBuilder('\Ioigoume\OracleDriver\ORM\Request')
             ->setMethods(['set'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -550,14 +550,14 @@ class RequestTest extends TestCase
      */
     public function testConstructorWithMarkNew()
     {
-        $request = $this->getMockBuilder('\Portal89\OracleDriver\ORM\Request')
+        $request = $this->getMockBuilder('\Ioigoume\OracleDriver\ORM\Request')
             ->setMethods(['isNew', 'clean'])
             ->disableOriginalConstructor()
             ->getMock();
         $request->expects($this->never())->method('clean');
         $request->__construct(['a' => 'b', 'c' => 'd']);
 
-        $request = $this->getMockBuilder('\Portal89\OracleDriver\ORM\Request')
+        $request = $this->getMockBuilder('\Ioigoume\OracleDriver\ORM\Request')
             ->setMethods(['isNew'])
             ->disableOriginalConstructor()
             ->getMock();

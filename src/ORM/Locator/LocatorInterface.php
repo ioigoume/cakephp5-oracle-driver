@@ -34,7 +34,7 @@ interface LocatorInterface
      *
      * @param string $alias The alias name you want to get.
      * @param array $options The options you want to build the method with.
-     * @return \Portal89\OracleDriver\ORM\Method
+     * @return \Ioigoume\OracleDriver\ORM\Method
      */
     public function get($alias, array $options = []);
 
@@ -50,8 +50,8 @@ interface LocatorInterface
      * Set an instance.
      *
      * @param string $alias The alias to set.
-     * @param \Portal89\OracleDriver\ORM\Method $object The method to set.
-     * @return \Portal89\OracleDriver\ORM\Method
+     * @param \Ioigoume\OracleDriver\ORM\Method $object The method to set.
+     * @return \Ioigoume\OracleDriver\ORM\Method
      */
     public function set($alias, Method $object);
 

@@ -102,7 +102,7 @@ class MethodsCollection
      *
      * @param string $name The name of the method to describe.
      * @param array $options The options to use, see above.
-     * @return \Portal89\OracleDriver\Database\Schema\MethodSchema Object with method metadata.
+     * @return \Ioigoume\OracleDriver\Database\Schema\MethodSchema Object with method metadata.
      * @throws \Cake\Database\Exception when method cannot be described.
      */
     public function describe($name, array $options = [])
@@ -122,7 +122,7 @@ class MethodsCollection
     /**
      * Helper method for running each step of the reflection process.
      *
-     * @param \Portal89\OracleDriver\Database\Schema\MethodSchema $method Object with method metadata.
+     * @param \Ioigoume\OracleDriver\Database\Schema\MethodSchema $method Object with method metadata.
      * @param string $name The method name.
      * @param array $config The config data.
      * @return void

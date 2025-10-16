@@ -19,7 +19,7 @@ class MethodLogger
     /**
      * Writes a LoggedMethod into a log
      *
-     * @param \Portal89\OracleDriver\Database\Log\LoggedMethod $method to be written in log
+     * @param \Ioigoume\OracleDriver\Database\Log\LoggedMethod $method to be written in log
      * @return void
      */
     public function log(LoggedMethod $method)
@@ -34,7 +34,7 @@ class MethodLogger
      * Wrapper function for the logger object, useful for unit testing
      * or for overriding in subclasses.
      *
-     * @param \Portal89\OracleDriver\Database\Log\LoggedMethod $method to be written in log
+     * @param \Ioigoume\OracleDriver\Database\Log\LoggedMethod $method to be written in log
      * @return void
      */
     protected function _log($method)
@@ -46,7 +46,7 @@ class MethodLogger
      * Helper function used to replace method placeholders by the real
      * params used to execute the method
      *
-     * @param \Portal89\OracleDriver\Database\Log\LoggedMethod $method The method to log
+     * @param \Ioigoume\OracleDriver\Database\Log\LoggedMethod $method The method to log
      * @return string
      */
     protected function _interpolate($method)

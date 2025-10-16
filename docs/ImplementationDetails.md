@@ -34,7 +34,7 @@ You'll often need this functions, for example
 
 Provided utility functions:
 
-`Portal89\OracleDriver\Database\FunctionsBuilder`
+`Ioigoume\OracleDriver\Database\FunctionsBuilder`
 `FunctionsBuilder::toChar(string)`
 `FunctionsBuilder::toCharWithFormat(string)`
 `FunctionsBuilder::toDate(string, string)`

@@ -110,7 +110,7 @@ class ResultSet implements ResultSetInterface
     /**
      * Constructor
      *
-     * @param \Portal89\OracleDriver\ORM\Method $repository Method object instance.
+     * @param \Ioigoume\OracleDriver\ORM\Method $repository Method object instance.
      * @param \Cake\Database\StatementInterface $statement The statement to fetch from
      * @param array $options Additional resultset options that setup result entity.
      * @internal param \Cake\ORM\Query $query Query from where results come

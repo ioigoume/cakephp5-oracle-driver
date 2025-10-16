@@ -76,7 +76,7 @@ end calc;
 We could call this function from CakePHP using the following code:
 
 ```php
-$method = \Portal89\OracleDriver\ORM\MethodRegistry::get('CalcSum', ['method' => 'CALC.SUM']);
+$method = \Ioigoume\OracleDriver\ORM\MethodRegistry::get('CalcSum', ['method' => 'CALC.SUM']);
 $request = $method->newRequest(['A' => 5, 'B' => 10]);
 // $request->isNew() would return true at this point
 $method->execute($request);

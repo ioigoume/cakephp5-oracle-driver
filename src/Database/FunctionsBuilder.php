@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Ioigoume\OracleDriver\Database;
 
 use Cake\Database\Expression\FunctionExpression;
-use Portal89\OracleDriver\Core\SingletonTrait;
+use Ioigoume\OracleDriver\Core\SingletonTrait;
 
 /**
  * Contains methods related to generating FunctionExpression objects

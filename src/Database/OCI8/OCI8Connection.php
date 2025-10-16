@@ -51,7 +51,7 @@ class OCI8Connection extends PDO
      * @param string $password Oracle user's password.
      * @param array $options Additional connection settings.
      *
-     * @throws \Portal89\OracleDriver\Database\OCI8\OCI8Exception
+     * @throws \Ioigoume\OracleDriver\Database\OCI8\OCI8Exception
      */
     public function __construct($dsn, $username, $password, $options)
     {
@@ -121,7 +121,7 @@ class OCI8Connection extends PDO
      */
     public function prepare(string $query, array $options = []): \PDOStatement|false
     {
-        return new \Portal89\OracleDriver\Database\OCI8\OCI8Statement($this->dbh, $query, $this);
+        return new \Ioigoume\OracleDriver\Database\OCI8\OCI8Statement($this->dbh, $query, $this);
     }
 
     /**

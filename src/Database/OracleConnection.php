@@ -15,10 +15,10 @@ namespace Ioigoume\OracleDriver\Database;
 use Cake\Core\Exception\Exception;
 use Cake\Database\Connection;
 use Cake\Database\StatementInterface;
-use Portal89\OracleDriver\Database\Log\MethodLogger;
-use Portal89\OracleDriver\Database\Log\MethodLoggingStatement;
-use Portal89\OracleDriver\Database\Schema\CachedMethodsCollection;
-use Portal89\OracleDriver\Database\Schema\MethodsCollection;
+use Ioigoume\OracleDriver\Database\Log\MethodLogger;
+use Ioigoume\OracleDriver\Database\Log\MethodLoggingStatement;
+use Ioigoume\OracleDriver\Database\Schema\CachedMethodsCollection;
+use Ioigoume\OracleDriver\Database\Schema\MethodsCollection;
 
 class OracleConnection extends Connection
 {
@@ -26,21 +26,21 @@ class OracleConnection extends Connection
      * Driver object, responsible for creating the real connection
      * and provide specific SQL dialect.
      *
-     * @var \Portal89\OracleDriver\Database\Driver\OracleBase
+     * @var \Ioigoume\OracleDriver\Database\Driver\OracleBase
      */
     protected $_driver;
 
     /**
      * Logger object instance.
      *
-     * @var \Portal89\OracleDriver\Database\Log\MethodLogger
+     * @var \Ioigoume\OracleDriver\Database\Log\MethodLogger
      */
     protected $_methodLogger = null;
 
     /**
      * The methods collection object
      *
-     * @var \Portal89\OracleDriver\Database\Schema\MethodsCollection
+     * @var \Ioigoume\OracleDriver\Database\Schema\MethodsCollection
      */
     protected $_schemaMethodsCollection;
 
@@ -48,7 +48,7 @@ class OracleConnection extends Connection
      * Builds oracle connection based on generic cakephp connection class.
      *
      * @param \Cake\Database\Connection $connection Connection object.
-     * @return \Portal89\OracleDriver\Database\OracleConnection
+     * @return \Ioigoume\OracleDriver\Database\OracleConnection
      */
     public static function build(Connection $connection)
     {
@@ -61,8 +61,8 @@ class OracleConnection extends Connection
     /**
      * Gets or sets a Schema\Collection object for this connection.
      *
-     * @param \Portal89\OracleDriver\Database\Schema\MethodsCollection|null $collection The schema collection object
-     * @return \Portal89\OracleDriver\Database\Schema\MethodsCollection
+     * @param \Ioigoume\OracleDriver\Database\Schema\MethodsCollection|null $collection The schema collection object
+     * @return \Ioigoume\OracleDriver\Database\Schema\MethodsCollection
      */
     public function methodSchemaCollection(?MethodsCollection $collection = null)
     {
@@ -122,7 +122,7 @@ class OracleConnection extends Connection
      * Sets the method logger object instance. When called with
      * no arguments it returns the currently setup logger instance.
      *
-     * @param \Portal89\OracleDriver\Database\Log\MethodLogger $instance logger object instance
+     * @param \Ioigoume\OracleDriver\Database\Log\MethodLogger $instance logger object instance
      * @return object logger instance
      */
     public function methodLogger(?MethodLogger $instance = null)

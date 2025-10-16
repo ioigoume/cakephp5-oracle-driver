@@ -36,7 +36,7 @@ class OCI8Statement extends \PDOStatement implements \IteratorAggregate
     protected $_sth;
 
     /**
-     * @var \Portal89\OracleDriver\Database\OCI8\OCI8Connection
+     * @var \Ioigoume\OracleDriver\Database\OCI8\OCI8Connection
      */
     protected $_conn;
 
@@ -92,7 +92,7 @@ class OCI8Statement extends \PDOStatement implements \IteratorAggregate
      *
      * @param resource $dbh The connection handle.
      * @param string|resource $statement The SQL statement.
-     * @param \Portal89\OracleDriver\Database\OCI8\OCI8Connection $conn OCI connection.
+     * @param \Ioigoume\OracleDriver\Database\OCI8\OCI8Connection $conn OCI connection.
      */
     public function __construct($dbh, $statement, OCI8Connection $conn)
     {
@@ -465,7 +465,7 @@ class OCI8Statement extends \PDOStatement implements \IteratorAggregate
      * @param int|null $fetchMode The fetch mode must be one of the PDO::FETCH_* constants.
      * @param mixed|null $param Column number, class name or object.
      * @param array|null $arguments Constructor arguments.
-     * @throws \Portal89\OracleDriver\Database\OCI8\Oci8Exception
+     * @throws \Ioigoume\OracleDriver\Database\OCI8\Oci8Exception
      * @return bool TRUE on success or FALSE on failure.
      */
     public function setFetchMode(int $mode, ...$args): bool

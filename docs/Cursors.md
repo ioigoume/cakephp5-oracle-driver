@@ -16,8 +16,8 @@ Cursors could be returned by Methods, check `fetchCursor` function https://git.c
 
 namespace App\Model\Method;
 
-use Portal89\OracleDriver\ORM\Method;
-use Portal89\OracleDriver\Database\Schema\MethodSchema;
+use Ioigoume\OracleDriver\ORM\Method;
+use Ioigoume\OracleDriver\Database\Schema\MethodSchema;
 
 class TagsSearchMethod extends Method {
 
@@ -26,7 +26,7 @@ class TagsSearchMethod extends Method {
 	}
 
     /**
-     * @param \Portal89\OracleDriver\Database\Schema\MethodSchema $method
+     * @param \Ioigoume\OracleDriver\Database\Schema\MethodSchema $method
      */
     protected function _initializeSchema(MethodSchema $method)
     {
@@ -38,7 +38,7 @@ class TagsSearchMethod extends Method {
 * Then in our Controller we could:
 
 ```php
-    $m = \Portal89\OracleDriver\ORM\MethodRegistry::get('TagsSearch');
+    $m = \Ioigoume\OracleDriver\ORM\MethodRegistry::get('TagsSearch');
     $r = $m->newRequest([
         'FILTER' => '%'
     ]);

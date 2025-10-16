@@ -38,7 +38,7 @@ class Method
     /**
      * The schema object containing a description of this method fields
      *
-     * @var \Portal89\OracleDriver\Database\Schema\MethodSchema
+     * @var \Ioigoume\OracleDriver\Database\Schema\MethodSchema
      */
     protected $_schema;
 
@@ -103,7 +103,7 @@ class Method
     /**
      * Sets the connection instance.
      *
-     * @param \Portal89\OracleDriver\Database\OracleConnection $connection The connection instance
+     * @param \Ioigoume\OracleDriver\Database\OracleConnection $connection The connection instance
      * @return $this
      */
     public function setConnection(OracleConnection $connection)
@@ -116,12 +116,12 @@ class Method
     /**
      * Returns the connection instance.
      *
-     * @return \Portal89\OracleDriver\Database\OracleConnection
+     * @return \Ioigoume\OracleDriver\Database\OracleConnection
      */
     public function getConnection(): OracleConnection
     {
         if (!$this->_connection) {
-            /** @var \Portal89\OracleDriver\Database\OracleConnection $connection */
+            /** @var \Ioigoume\OracleDriver\Database\OracleConnection $connection */
             $connection = ConnectionManager::get(static::defaultConnectionName());
             $this->_connection = $connection;
         }
@@ -132,7 +132,7 @@ class Method
     /**
      * Returns the schema method object describing this method's parameters.
      *
-     * @return \Portal89\OracleDriver\Database\Schema\MethodSchema
+     * @return \Ioigoume\OracleDriver\Database\Schema\MethodSchema
      */
     public function getSchema(): MethodSchema
     {
@@ -149,12 +149,12 @@ class Method
     /**
      * Sets the schema method object describing this method's parameters.
      *
-     * If an \Portal89\OracleDriver\Database\Schema\MethodSchema is passed, it will be used for
+     * If an \Ioigoume\OracleDriver\Database\Schema\MethodSchema is passed, it will be used for
      * this method instead of the default one.
      *
-     * If an array is passed, a new \Portal89\OracleDriver\Database\Schema\MethodSchema will be constructed out of it and used as the schema for this method.
+     * If an array is passed, a new \Ioigoume\OracleDriver\Database\Schema\MethodSchema will be constructed out of it and used as the schema for this method.
      *
-     * @param array|\Portal89\OracleDriver\Database\Schema\MethodSchema|null $schema New schema to be used for this table
+     * @param array|\Ioigoume\OracleDriver\Database\Schema\MethodSchema|null $schema New schema to be used for this table
      * @return $this
      */
     public function setSchema($schema)
@@ -178,13 +178,13 @@ class Method
      * ### Example:
      *
      * ```
-     * protected function _initializeSchema(\Portal89\OracleDriver\Database\Schema\MethodSchema $method) {
+     * protected function _initializeSchema(\Ioigoume\OracleDriver\Database\Schema\MethodSchema $method) {
      *  return $method;
      * }
      * ```
      *
-     * @param \Portal89\OracleDriver\Database\Schema\MethodSchema $method The method definition fetched from database.
-     * @return \Portal89\OracleDriver\Database\Schema\MethodSchema the altered schema
+     * @param \Ioigoume\OracleDriver\Database\Schema\MethodSchema $method The method definition fetched from database.
+     * @return \Ioigoume\OracleDriver\Database\Schema\MethodSchema the altered schema
      * @api
      */
     protected function _initializeSchema(MethodSchema $method)
@@ -196,13 +196,13 @@ class Method
      * Returns the class used to keep request parameters for this method
      *
      * @param string|null $name the name of the class to use
-     * @throws \Portal89\OracleDriver\ORM\Exception\MissingRequestException when the request class cannot be found
+     * @throws \Ioigoume\OracleDriver\ORM\Exception\MissingRequestException when the request class cannot be found
      * @return string
      */
     public function requestClass($name = null)
     {
         if ($name === null && !$this->_requestClass) {
-            $default = '\Portal89\OracleDriver\ORM\Request';
+            $default = '\Ioigoume\OracleDriver\ORM\Request';
             $self = static::class;
             $parts = explode('\\', $self);
 
@@ -255,7 +255,7 @@ class Method
      * Builds new request object for current method.
      *
      * @param array $data Parameters data.
-     * @return \Portal89\OracleDriver\ORM\Request
+     * @return \Ioigoume\OracleDriver\ORM\Request
      */
     public function newRequest($data = null)
     {
@@ -273,7 +273,7 @@ class Method
     /**
      * Execute request. Request should be initialized.
      *
-     * @param \Portal89\OracleDriver\ORM\RequestInterface $request Request object instance.
+     * @param \Ioigoume\OracleDriver\ORM\RequestInterface $request Request object instance.
      * @return mixed
      */
     public function execute(RequestInterface $request)
@@ -341,7 +341,7 @@ class Method
      * instance is created through the MethodRegistry without a connection.
      *
      * @return string
-     * @see \Portal89\OracleDriver\ORM\MethodRegistry::get()
+     * @see \Ioigoume\OracleDriver\ORM\MethodRegistry::get()
      */
     public static function defaultConnectionName()
     {

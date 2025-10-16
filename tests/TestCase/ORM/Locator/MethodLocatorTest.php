@@ -41,7 +41,7 @@ class MethodLocatorTest extends TestCase
     /**
      * MethodLocator instance.
      *
-     * @var \Portal89\OracleDriver\ORM\Locator\MethodLocator
+     * @var \Ioigoume\OracleDriver\ORM\Locator\MethodLocator
      */
     protected $_locator;
 
@@ -223,10 +223,10 @@ class MethodLocatorTest extends TestCase
     public function testGetWithConfigClassName()
     {
         $this->_locator->config('MyUsersMethodAlias', [
-            'className' => '\Portal89\OracleDriver\Test\TestCase\ORM\Locator\MyUsersMethod',
+            'className' => '\Ioigoume\OracleDriver\Test\TestCase\ORM\Locator\MyUsersMethod',
         ]);
         $result = $this->_locator->get('MyUsersMethodAlias');
-        $this->assertInstanceOf('\Portal89\OracleDriver\Test\TestCase\ORM\Locator\MyUsersMethod', $result, 'Should use config() data className option.');
+        $this->assertInstanceOf('\Ioigoume\OracleDriver\Test\TestCase\ORM\Locator\MyUsersMethod', $result, 'Should use config() data className option.');
     }
 
     /**

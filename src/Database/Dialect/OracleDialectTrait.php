@@ -20,10 +20,10 @@ use Cake\Database\QueryCompiler;
 use Cake\Database\Schema\SchemaDialect;
 use Cake\Database\Schema\BaseSchema;
 use Cake\Database\Driver\TupleComparisonTranslatorTrait;
-use Portal89\OracleDriver\Database\Expression\SimpleExpression;
-use Portal89\OracleDriver\Database\Oracle12Compiler;
-use Portal89\OracleDriver\Database\OracleCompiler;
-use Portal89\OracleDriver\Database\Schema\OracleSchema;
+use Ioigoume\OracleDriver\Database\Expression\SimpleExpression;
+use Ioigoume\OracleDriver\Database\Oracle12Compiler;
+use Ioigoume\OracleDriver\Database\OracleCompiler;
+use Ioigoume\OracleDriver\Database\Schema\OracleSchema;
 
 /**
  * Contains functions that encapsulates the SQL dialect used by Oracle,
@@ -50,7 +50,7 @@ trait OracleDialectTrait
     /**
      * The schema dialect class for this driver
      *
-     * @var \Portal89\OracleDriver\Database\Schema\OracleSchema
+     * @var \Ioigoume\OracleDriver\Database\Schema\OracleSchema
      */
     protected SchemaDialect $_schemaDialect;
 
@@ -307,7 +307,7 @@ trait OracleDialectTrait
     /**
      * {@inheritDoc}
      *
-     * @return \Portal89\OracleDriver\Database\OracleCompiler
+     * @return \Ioigoume\OracleDriver\Database\OracleCompiler
      */
     public function newCompiler(): QueryCompiler
     {

@@ -31,7 +31,7 @@ class DebugMethodLog extends MethodLogger
     /**
      * Decorated logger.
      *
-     * @var \Portal89\OracleDriver\Database\Log\LoggedMethod
+     * @var \Ioigoume\OracleDriver\Database\Log\LoggedMethod
      */
     protected $_logger;
 
@@ -59,7 +59,7 @@ class DebugMethodLog extends MethodLogger
     /**
      * Constructor
      *
-     * @param \Portal89\OracleDriver\Database\Log\MethodLogger $logger The logger to decorate and spy on.
+     * @param \Ioigoume\OracleDriver\Database\Log\MethodLogger $logger The logger to decorate and spy on.
      * @param string $name The name of the connection being logged.
      */
     public function __construct($logger, $name)
@@ -111,7 +111,7 @@ class DebugMethodLog extends MethodLogger
     /**
      * Log queries
      *
-     * @param \Portal89\OracleDriver\Database\Log\LoggedMethod $method The query being logged.
+     * @param \Ioigoume\OracleDriver\Database\Log\LoggedMethod $method The query being logged.
      * @return void
      */
     public function log(LoggedMethod $method)

@@ -521,7 +521,7 @@ class QueryTest extends CakeQueryTest
     public function testUnionOrderBy()
     {
         $this->skipIf(
-            ($this->connection->getDriver() instanceof \Portal89\OracleDriver\Database\Driver\OracleBase),
+            ($this->connection->getDriver() instanceof \Ioigoume\OracleDriver\Database\Driver\OracleBase),
             'Driver does not support ORDER BY in UNIONed queries.'
         );
         parent::testUnionOrderBy();

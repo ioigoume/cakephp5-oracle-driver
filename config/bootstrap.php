@@ -10,8 +10,8 @@
  */
 
 use Cake\Database\TypeFactory;
-use Portal89\OracleDriver\Database\Type\CursorType;
-use Portal89\OracleDriver\Database\Type\BoolType;
+use Ioigoume\OracleDriver\Database\Type\CursorType;
+use Ioigoume\OracleDriver\Database\Type\BoolType;
 
 TypeFactory::set('cursor', new CursorType());
 TypeFactory::set('boolean', new BoolType());

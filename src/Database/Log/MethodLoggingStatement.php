@@ -12,7 +12,7 @@ declare(strict_types=1);
  */
 namespace Ioigoume\OracleDriver\Database\Log;
 
-use Portal89\OracleDriver\Database\Statement\Method\MethodStatementDecorator;
+use Ioigoume\OracleDriver\Database\Statement\Method\MethodStatementDecorator;
 use Exception;
 
 /**
@@ -23,7 +23,7 @@ class MethodLoggingStatement extends MethodStatementDecorator
     /**
      * Logger instance responsible for actually doing the logging task
      *
-     * @var \Portal89\OracleDriver\Database\Log\MethodLogger
+     * @var \Ioigoume\OracleDriver\Database\Log\MethodLogger
      */
     protected $_logger;
 
@@ -66,7 +66,7 @@ class MethodLoggingStatement extends MethodStatementDecorator
      * Copies the logging data to the passed LoggedMethod and sends it
      * to the logging system.
      *
-     * @param \Portal89\OracleDriver\Database\Log\LoggedMethod $method The method to log.
+     * @param \Ioigoume\OracleDriver\Database\Log\LoggedMethod $method The method to log.
      * @param array $params List of values to be bound to method.
      * @param float $startTime The microtime when the method was executed.
      * @return void

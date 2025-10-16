@@ -24,7 +24,7 @@ abstract class TestCase extends CakeTestCase
     /**
      * The class responsible for managing the creation, loading and removing of fixtures
      *
-     * @var \Portal89\OracleDriver\TestSuite\Fixture\OracleFixtureManager
+     * @var \Ioigoume\OracleDriver\TestSuite\Fixture\OracleFixtureManager
      */
     public $methodFixtureManager = null;
 

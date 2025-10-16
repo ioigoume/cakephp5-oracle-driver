@@ -215,7 +215,7 @@ class OracleFixtureManager
     /**
      * Runs the drop and create commands on the fixtures if necessary.
      *
-     * @param \Portal89\OracleDriver\TestSuite\Fixture\MethodTestFixture $fixture the fixture object to create
+     * @param \Ioigoume\OracleDriver\TestSuite\Fixture\MethodTestFixture $fixture the fixture object to create
      * @param \Cake\Database\Connection $db The Connection object instance to use
      * @param array $sources The existing tables in the datasource.
      * @param bool $drop whether drop the fixture if it is already created or not
@@ -386,7 +386,7 @@ class OracleFixtureManager
      * Check whether or not a fixture has been inserted in a given connection name.
      *
      * @param string $connection The connection name.
-     * @param \Portal89\OracleDriver\TestSuite\Fixture\MethodTestFixture $fixture The fixture to check.
+     * @param \Ioigoume\OracleDriver\TestSuite\Fixture\MethodTestFixture $fixture The fixture to check.
      * @return bool
      */
     public function isFixtureSetup($connection, $fixture)

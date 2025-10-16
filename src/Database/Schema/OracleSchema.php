@@ -334,7 +334,7 @@ WHERE 1=1 " . ($useOwner ? $ownerCondition : '') . $objectCondition . " ORDER BY
     /**
      * Convert parameter description results into abstract schema fields.
      *
-     * @param \Portal89\OracleDriver\Database\Schema\MethodSchema $method The method object to append parameters to.
+     * @param \Ioigoume\OracleDriver\Database\Schema\MethodSchema $method The method object to append parameters to.
      * @param array $row The row data from `describeParametersSql`.
      * @return void
      */

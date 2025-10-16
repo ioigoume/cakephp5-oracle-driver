@@ -73,8 +73,8 @@ class MethodRegistry
     /**
      * Sets and returns a singleton instance of LocatorInterface implementation.
      *
-     * @param \Portal89\OracleDriver\ORM\Locator\LocatorInterface $locator Instance of a locator to use.
-     * @return \Portal89\OracleDriver\ORM\Locator\LocatorInterface
+     * @param \Ioigoume\OracleDriver\ORM\Locator\LocatorInterface $locator Instance of a locator to use.
+     * @return \Ioigoume\OracleDriver\ORM\Locator\LocatorInterface
      */
     public static function locator(?LocatorInterface $locator = null)
     {
@@ -94,7 +94,7 @@ class MethodRegistry
      *
      * @param string $alias The alias name you want to get.
      * @param array $options The options you want to build the method with.
-     * @return \Portal89\OracleDriver\ORM\Method
+     * @return \Ioigoume\OracleDriver\ORM\Method
      */
     public static function get($alias, array $options = [])
     {
@@ -116,8 +116,8 @@ class MethodRegistry
      * Set an instance.
      *
      * @param string $alias The alias to set.
-     * @param \Portal89\OracleDriver\ORM\Method $object The method to set.
-     * @return \Portal89\OracleDriver\ORM\Method
+     * @param \Ioigoume\OracleDriver\ORM\Method $object The method to set.
+     * @return \Ioigoume\OracleDriver\ORM\Method
      */
     public static function set($alias, Method $object)
     {

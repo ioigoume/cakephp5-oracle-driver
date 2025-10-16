@@ -22,7 +22,7 @@ trait LocatorAwareTrait
     /**
      * Method locator instance
      *
-     * @var \Portal89\OracleDriver\ORM\Locator\LocatorInterface
+     * @var \Ioigoume\OracleDriver\ORM\Locator\LocatorInterface
      */
     protected $_methodLocator;
 
@@ -30,8 +30,8 @@ trait LocatorAwareTrait
      * Sets the method locator.
      * If no parameters are passed, it will return the currently used locator.
      *
-     * @param \Portal89\OracleDriver\ORM\Locator\LocatorInterface|null $methodLocator LocatorInterface instance.
-     * @return \Portal89\OracleDriver\ORM\Locator\LocatorInterface
+     * @param \Ioigoume\OracleDriver\ORM\Locator\LocatorInterface|null $methodLocator LocatorInterface instance.
+     * @return \Ioigoume\OracleDriver\ORM\Locator\LocatorInterface
      */
     public function methodLocator(?LocatorInterface $methodLocator = null)
     {

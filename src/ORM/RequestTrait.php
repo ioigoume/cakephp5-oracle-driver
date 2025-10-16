@@ -56,7 +56,7 @@ trait RequestTrait
     /**
      * Holds the repository of the method class for the instance object
      *
-     * @var \Portal89\OracleDriver\ORM\Method
+     * @var \Ioigoume\OracleDriver\ORM\Method
      */
     protected $_repository;
 
@@ -427,7 +427,7 @@ trait RequestTrait
      *
      * @param string $name Property name.
      * @param array $options Cursor ResultSet configuration options.
-     * @return \Portal89\OracleDriver\ORM\Method\ResultSet
+     * @return \Ioigoume\OracleDriver\ORM\Method\ResultSet
      */
     public function fetchCursor($name, $options = [])
     {
@@ -475,7 +475,7 @@ trait RequestTrait
     /**
      * Apply schema structure to the request object.
      *
-     * @param \Portal89\OracleDriver\Database\Schema\MethodSchema $schema Method schema object instance.
+     * @param \Ioigoume\OracleDriver\Database\Schema\MethodSchema $schema Method schema object instance.
      * @return void
      */
     public function applySchema(MethodSchema $schema)
