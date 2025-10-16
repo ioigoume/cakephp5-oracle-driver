@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Portal89\OracleDriver\Test\TestCase\Database\Schema;
+namespace Ioigoume\OracleDriver\Test\TestCase\Database\Schema;
 
 use Cake\Database\DriverInterface;
 use Cake\Database\Schema\TableSchema;

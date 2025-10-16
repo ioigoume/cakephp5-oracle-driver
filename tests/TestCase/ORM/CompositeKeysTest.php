@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Portal89\OracleDriver\Test\TestCase\ORM;
+namespace Ioigoume\OracleDriver\Test\TestCase\ORM;
 
 use Cake\Test\TestCase\ORM\CompositeKeysTest as CakeCompositeKeysTest;
 

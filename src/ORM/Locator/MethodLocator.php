@@ -2,12 +2,12 @@
 declare(strict_types=1);
 
 /**
- * Copyright 2024, Portal89 (https://portal89.com.br)
+ * Copyright 2024, Ioigoume (https://Ioigoume.com.br)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2024, Portal89 (https://portal89.com.br)
+ * @copyright Copyright 2024, Ioigoume (https://Ioigoume.com.br)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 namespace Ioigoume\OracleDriver\ORM\Locator;
@@ -15,8 +15,8 @@ namespace Ioigoume\OracleDriver\ORM\Locator;
 use Cake\Core\App;
 use Cake\Datasource\ConnectionManager;
 use Cake\Utility\Inflector;
-use Portal89\OracleDriver\Database\OracleConnection;
-use Portal89\OracleDriver\ORM\Method;
+use Ioigoume\OracleDriver\Database\OracleConnection;
+use Ioigoume\OracleDriver\ORM\Method;
 use RuntimeException;
 
 /**
@@ -103,7 +103,7 @@ class MethodLocator implements LocatorInterface
      *
      * If $options does not contain `className` CakePHP will attempt to construct the
      * class name based on the alias. If this class does not exist,
-     * then the default `Portal89\OracleDriver\ORM\Method` class will be used. By setting the `className`
+     * then the default `Ioigoume\OracleDriver\ORM\Method` class will be used. By setting the `className`
      * option you can define the specific class to use. This className can
      * use a plugin short class reference.
      *
@@ -158,7 +158,7 @@ class MethodLocator implements LocatorInterface
                 [, $method] = pluginSplit($options['className']);
                 $options['method'] = Inflector::underscore($method);
             }
-            $options['className'] = 'Portal89\OracleDriver\ORM\Method';
+            $options['className'] = 'Ioigoume\OracleDriver\ORM\Method';
         }
 
         if (empty($options['connection'])) {
@@ -172,7 +172,7 @@ class MethodLocator implements LocatorInterface
         $options['registryAlias'] = $alias;
         $this->_instances[$alias] = $this->_create($options);
 
-        if ($options['className'] === 'Portal89\OracleDriver\ORM\Method') {
+        if ($options['className'] === 'Ioigoume\OracleDriver\ORM\Method') {
             $this->_fallbacked[$alias] = $this->_instances[$alias];
         }
 

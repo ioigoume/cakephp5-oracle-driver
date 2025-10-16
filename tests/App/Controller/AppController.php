@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Portal89\OracleDriver\Test\App\Controller;
+namespace Ioigoume\OracleDriver\Test\App\Controller;
 
 use Cake\Controller\Controller;
 

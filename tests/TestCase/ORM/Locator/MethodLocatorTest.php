@@ -2,23 +2,23 @@
 declare(strict_types=1);
 
 /**
- * Copyright 2024, Portal89 (https://portal89.com.br)
+ * Copyright 2024, Ioigoume (https://Ioigoume.com.br)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2024, Portal89 (https://portal89.com.br)
+ * @copyright Copyright 2024, Ioigoume (https://Ioigoume.com.br)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Portal89\OracleDriver\Test\TestCase\ORM\Locator;
+namespace Ioigoume\OracleDriver\Test\TestCase\ORM\Locator;
 
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Datasource\ConnectionManager;
 use Cake\TestSuite\TestCase;
-use Portal89\OracleDriver\ORM\Locator\MethodLocator;
-use Portal89\OracleDriver\ORM\Method;
+use Ioigoume\OracleDriver\ORM\Locator\MethodLocator;
+use Ioigoume\OracleDriver\ORM\Method;
 
 /**
  * Used to test correct class is instantiated when using $this->_locator->get();
@@ -155,7 +155,7 @@ class MethodLocatorTest extends TestCase
         $result = $this->_locator->get('Articles', [
             'method' => 'my_articles',
         ]);
-        $this->assertInstanceOf('Portal89\OracleDriver\ORM\Method', $result);
+        $this->assertInstanceOf('Ioigoume\OracleDriver\ORM\Method', $result);
         $this->assertEquals('my_articles', $result->getMethod());
 
         $result2 = $this->_locator->get('Articles');
@@ -171,32 +171,32 @@ class MethodLocatorTest extends TestCase
     public function testGetFallbacks()
     {
         $result = $this->_locator->get('Droids');
-        $this->assertInstanceOf('Portal89\OracleDriver\ORM\Method', $result);
+        $this->assertInstanceOf('Ioigoume\OracleDriver\ORM\Method', $result);
         $this->assertEquals('droids', $result->getMethod());
 //        $this->assertEquals('Droids', $result->alias());
 
         $result = $this->_locator->get('R2D2', ['className' => 'Droids']);
-        $this->assertInstanceOf('Portal89\OracleDriver\ORM\Method', $result);
+        $this->assertInstanceOf('Ioigoume\OracleDriver\ORM\Method', $result);
         $this->assertEquals('droids', $result->getMethod(), 'The method should be derived from the className');
 //        $this->assertEquals('R2D2', $result->alias());
 
         $result = $this->_locator->get('C3P0', ['className' => 'Droids', 'method' => 'rebels']);
-        $this->assertInstanceOf('Portal89\OracleDriver\ORM\Method', $result);
+        $this->assertInstanceOf('Ioigoume\OracleDriver\ORM\Method', $result);
         $this->assertEquals('rebels', $result->getMethod(), 'The method should be taken from options');
 //        $this->assertEquals('C3P0', $result->alias());
 
         $result = $this->_locator->get('Funky.Chipmunks');
-        $this->assertInstanceOf('Portal89\OracleDriver\ORM\Method', $result);
+        $this->assertInstanceOf('Ioigoume\OracleDriver\ORM\Method', $result);
         $this->assertEquals('chipmunks', $result->getMethod(), 'The method should be derived from the alias');
 //        $this->assertEquals('Chipmunks', $result->alias());
 
         $result = $this->_locator->get('Awesome', ['className' => 'Funky.Monkies']);
-        $this->assertInstanceOf('Portal89\OracleDriver\ORM\Method', $result);
+        $this->assertInstanceOf('Ioigoume\OracleDriver\ORM\Method', $result);
         $this->assertEquals('monkies', $result->getMethod(), 'The method should be derived from the classname');
 //        $this->assertEquals('Awesome', $result->alias());
 
-        $result = $this->_locator->get('Stuff', ['className' => 'Portal89\OracleDriver\ORM\Method']);
-        $this->assertInstanceOf('Portal89\OracleDriver\ORM\Method', $result);
+        $result = $this->_locator->get('Stuff', ['className' => 'Ioigoume\OracleDriver\ORM\Method']);
+        $this->assertInstanceOf('Ioigoume\OracleDriver\ORM\Method', $result);
         $this->assertEquals('stuff', $result->getMethod(), 'The method should be derived from the alias');
 //        $this->assertEquals('Stuff', $result->alias());
     }
@@ -250,8 +250,8 @@ class MethodLocatorTest extends TestCase
      */
     public function testGetWithSameOption()
     {
-        $result = $this->_locator->get('Users', ['className' => 'Portal89\OracleDriver\Test\TestCase\ORM\Locator\MyUsersMethod']);
-        $result2 = $this->_locator->get('Users', ['className' => 'Portal89\OracleDriver\Test\TestCase\ORM\Locator\MyUsersMethod']);
+        $result = $this->_locator->get('Users', ['className' => 'Ioigoume\OracleDriver\Test\TestCase\ORM\Locator\MyUsersMethod']);
+        $result2 = $this->_locator->get('Users', ['className' => 'Ioigoume\OracleDriver\Test\TestCase\ORM\Locator\MyUsersMethod']);
         $this->assertEquals($result, $result2);
     }
 
@@ -314,7 +314,7 @@ class MethodLocatorTest extends TestCase
 //        $plugin1 = $this->_locator->get('TestPlugin.Comments');
 //        $plugin2 = $this->_locator->get('TestPluginTwo.Comments');
 //
-//        $this->assertInstanceOf('Portal89\OracleDriver\ORM\Method', $app, 'Should be an app method instance');
+//        $this->assertInstanceOf('Ioigoume\OracleDriver\ORM\Method', $app, 'Should be an app method instance');
 //        $this->assertInstanceOf('TestPlugin\Model\Method\CommentsMethod', $plugin1, 'Should be a plugin 1 method instance');
 //        $this->assertInstanceOf('TestPluginTwo\Model\Method\CommentsMethod', $plugin2, 'Should be a plugin 2 method instance');
 //
@@ -322,7 +322,7 @@ class MethodLocatorTest extends TestCase
 //        $plugin1 = $this->_locator->get('TestPlugin.Comments');
 //        $app = $this->_locator->get('Comments');
 //
-//        $this->assertInstanceOf('Portal89\OracleDriver\ORM\Method', $app, 'Should still be an app method instance');
+//        $this->assertInstanceOf('Ioigoume\OracleDriver\ORM\Method', $app, 'Should still be an app method instance');
 //        $this->assertInstanceOf('TestPlugin\Model\Method\CommentsMethod', $plugin1, 'Should still be a plugin 1 method instance');
 //        $this->assertInstanceOf('TestPluginTwo\Model\Method\CommentsMethod', $plugin2, 'Should still be a plugin 2 method instance');
 //    }
@@ -389,7 +389,7 @@ class MethodLocatorTest extends TestCase
         $this->_locator->config('users', $options);
 
         $method = $this->_locator->get('users', ['method' => 'users']);
-        $this->assertInstanceOf('Portal89\OracleDriver\ORM\Method', $method);
+        $this->assertInstanceOf('Ioigoume\OracleDriver\ORM\Method', $method);
         $this->assertEquals('users', $method->getMethod());
 //        $this->assertSame($connection, $method->connection());
 

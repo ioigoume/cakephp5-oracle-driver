@@ -15,7 +15,7 @@ declare(strict_types=1);
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace Portal89\OracleDriver\Test\App;
+namespace Ioigoume\OracleDriver\Test\App;
 
 use Cake\Http\BaseApplication;
 use Cake\Http\MiddlewareQueue;
