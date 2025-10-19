@@ -14,6 +14,8 @@ namespace Ioigoume\OracleDriver\Database\Statement;
 
 use Cake\Database\Statement\BufferedStatement;
 use Cake\Database\Statement\BufferResultsTrait;
+use Cake\Database\TypeFactory;
+use Cake\Database\TypeInterface;
 use PDO;
 
 /**
@@ -23,11 +25,11 @@ use Cake\Database\StatementInterface;
 
 class OracleStatement implements StatementInterface
 {
-	protected $_statement;
-	protected $_driver;
-	protected $_bufferResults = false;
-    
-	public $queryString;
+    protected $_statement;
+    protected $_driver;
+    protected $_bufferResults = false;
+
+    public $queryString;
 
     public $paramMap;
 
@@ -88,7 +90,10 @@ class OracleStatement implements StatementInterface
     {
         $column = $this->paramMap[$column] ?? $column;
 
-        // $type = $type == 'boolean' ? 'integer' : $type;
+        $type ??= 'string';
+        if (!is_int($type)) {
+            [$value, $type] = $this->cast($value, $type);
+        }
 
         $this->_statement->bindValue($column, $value, $type);
     }
@@ -96,17 +101,33 @@ class OracleStatement implements StatementInterface
     /**
      * {@inheritDoc}
      */
+    protected function cast(mixed $value, TypeInterface|string|int $type = 'string'): array
+    {
+        if (is_string($type)) {
+            $type = TypeFactory::build($type);
+        }
+        if ($type instanceof TypeInterface) {
+            $value = $type->toDatabase($value, $this->_driver);
+            $type = $type->toStatement($value, $this->_driver);
+        }
+
+        return [$value, $type];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function fetch(string|int $mode = PDO::FETCH_BOTH): mixed
     {
-		if (is_string($mode)) {
-			$mode = match (strtolower($mode)) {
-				'assoc' => \PDO::FETCH_ASSOC,
-				'num' => \PDO::FETCH_NUM,
-				'both' => \PDO::FETCH_BOTH,
-				default => \PDO::FETCH_BOTH,
-			};
-		}
-		
+        if (is_string($mode)) {
+            $mode = match (strtolower($mode)) {
+                'assoc' => \PDO::FETCH_ASSOC,
+                'num' => \PDO::FETCH_NUM,
+                'both' => \PDO::FETCH_BOTH,
+                default => \PDO::FETCH_BOTH,
+            };
+        }
+
         $result = $this->_statement->fetch($mode);
         if (is_array($result)) {
             foreach ($result as $key => &$value) {
@@ -124,15 +145,15 @@ class OracleStatement implements StatementInterface
      */
     public function fetchAll(string|int $mode = PDO::FETCH_BOTH): array
     {
-		if (is_string($mode)) {
-			$mode = match (strtolower($mode)) {
-				'assoc' => \PDO::FETCH_ASSOC,
-				'num' => \PDO::FETCH_NUM,
-				'both' => \PDO::FETCH_BOTH,
-				default => \PDO::FETCH_BOTH,
-			};
-		}
-		
+        if (is_string($mode)) {
+            $mode = match (strtolower($mode)) {
+                'assoc' => \PDO::FETCH_ASSOC,
+                'num' => \PDO::FETCH_NUM,
+                'both' => \PDO::FETCH_BOTH,
+                default => \PDO::FETCH_BOTH,
+            };
+        }
+
         $result = $this->_statement->fetchAll($mode);
         if (is_array($result)) {
             foreach ($result as $k => $row) {
@@ -146,67 +167,67 @@ class OracleStatement implements StatementInterface
 
         return $result;
     }
-	
-	public function fetchColumn(int $column = 0): mixed
-	{
-		return $this->_statement->fetchColumn($column);
-	}
 
-	public function rowCount(): int
-	{
-		return $this->_statement->rowCount();
-	}
+    public function fetchColumn(int $columnIndex = 0): mixed
+    {
+        return $this->_statement->fetchColumn($columnIndex);
+    }
 
-	public function columnCount(): int
-	{
-		return $this->_statement->columnCount();
-	}
+    public function rowCount(): int
+    {
+        return $this->_statement->rowCount();
+    }
 
-	public function closeCursor(): void
-	{
-		if (method_exists($this->_statement, 'closeCursor')) {
-			$this->_statement->closeCursor();
-		}
-	}
+    public function columnCount(): int
+    {
+        return $this->_statement->columnCount();
+    }
 
-	public function errorCode(): string
-	{
-		return (string) $this->_statement->errorCode();
-	}
+    public function closeCursor(): void
+    {
+        if (method_exists($this->_statement, 'closeCursor')) {
+            $this->_statement->closeCursor();
+        }
+    }
 
-	public function errorInfo(): array
-	{
-		return $this->_statement->errorInfo();
-	}
+    public function errorCode(): string
+    {
+        return (string) $this->_statement->errorCode();
+    }
 
-	public function lastInsertId(?string $table = null, ?string $column = null): string|int
-	{
-		return $this->_statement->lastInsertId($table, $column);
-	}
+    public function errorInfo(): array
+    {
+        return $this->_statement->errorInfo();
+    }
 
-	public function getIterator(): \Iterator
-	{
-		return new \ArrayIterator($this->fetchAll());
-	}
-	
-	public function fetchAssoc(): array
-	{
-		return $this->_statement->fetch(PDO::FETCH_ASSOC);
-	}
+    public function lastInsertId(?string $table = null, ?string $column = null): string|int
+    {
+        return $this->_statement->lastInsertId($table, $column);
+    }
 
-	public function queryString(): string
-	{
-		return $this->_statement->queryString ?? '';
-	}
+    public function getIterator(): \Iterator
+    {
+        return new \ArrayIterator($this->fetchAll());
+    }
 
-	public function getBoundParams(): array
-	{
-		return $this->paramMap ?? [];
-	}
-	
-	public function __construct($statement, $driver)
-	{
-		$this->_statement = $statement;
-		$this->_driver = $driver;
-	}
+    public function fetchAssoc(): array
+    {
+        return $this->_statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function queryString(): string
+    {
+        return $this->_statement->queryString ?? '';
+    }
+
+    public function getBoundParams(): array
+    {
+        return $this->paramMap ?? [];
+    }
+
+    public function __construct($statement, $driver)
+    {
+        $this->_statement = $statement;
+        $this->_driver = $driver;
+    }
 }

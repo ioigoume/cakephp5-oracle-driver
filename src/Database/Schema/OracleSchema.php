@@ -123,6 +123,47 @@ WHERE 1=1 " . ($useOwner ? $ownerCondition : '') . $objectCondition . " ORDER BY
     }
 
     /**
+     * Get a list of column metadata as a array
+     *
+     * Each item in the array will contain the following:
+     *
+     * - name : the name of the column.
+     * - type : the abstract type of the column.
+     * - length : the length of the column.
+     * - default : the default value of the column or null.
+     * - null : boolean indicating whether the column can be null.
+     * - comment : the column comment or null.
+     *
+     * Additionaly the `autoIncrement` key will be set for columns that are a primary key.
+     *
+     * @param string $tableName The name of the table to describe columns on.
+     * @return array
+     */
+    public function describeColumns(string $tableName): array
+    {
+        $config = $this->_driver->config();
+        if (str_contains($tableName, '.')) {
+            [$config['schema'], $tableName] = explode('.', $tableName);
+        }
+        /** @var \Cake\Database\Schema\TableSchema $table */
+        $table = $this->_driver->newTableSchema($tableName);
+
+        [$sql, $params] = $this->describeColumnSql($tableName, $config);
+        $statement = $this->_driver->execute($sql, $params);
+        foreach ($statement->fetchAll('assoc') as $row) {
+            $this->convertColumnDescription($table, $row);
+        }
+        $columns = [];
+        foreach ($table->columns() as $columnName) {
+            $column = $table->getColumn($columnName);
+            $column['name'] = $columnName;
+            $columns[] = $column;
+        }
+
+        return $columns;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function describeColumnSql(string $tableName, array $config): array
@@ -443,6 +484,47 @@ WHERE 1=1 " . ($useOwner ? $ownerCondition : '') . $objectCondition . " ORDER BY
     }
 
     /**
+     * Get a list of index metadata as a array
+     *
+     * Each item in the array will contain the following:
+     *
+     * - name : the name of the index.
+     * - type : the type of the index. One of `unique`, `index`, `primary`.
+     * - columns : the columns in the index.
+     * - length : the length of the index if applicable.
+     *
+     * @param string $tableName The name of the table to describe indexes on.
+     * @return array
+     */
+    public function describeIndexes(string $tableName): array
+    {
+        $config = $this->_driver->config();
+        if (str_contains($tableName, '.')) {
+            [$config['schema'], $tableName] = explode('.', $tableName);
+        }
+        /** @var \Cake\Database\Schema\TableSchema $table */
+        $table = $this->_driver->newTableSchema($tableName);
+        // Add the columns because TableSchema needs them.
+        foreach ($this->describeColumns($tableName) as $column) {
+            $table->addColumn($column['name'], $column);
+        }
+
+        [$sql, $params] = $this->describeIndexSql($tableName, $config);
+        $statement = $this->_driver->execute($sql, $params);
+        foreach ($statement->fetchAll('assoc') as $row) {
+            $this->convertIndexDescription($table, $row);
+        }
+        $indexes = [];
+        foreach ($table->indexes() as $name) {
+            $index = $table->getIndex($name);
+            $index['name'] = $name;
+            $indexes[] = $index;
+        }
+
+        return $indexes;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function describeIndexSql(string $tableName, array $config): array
@@ -555,6 +637,49 @@ WHERE 1=1 " . ($useOwner ? $ownerCondition : '') . $objectCondition . " ORDER BY
     }
 
     /**
+     * Get a list of constraint metadata as a array
+     *
+     * Each item in the array will contain the following:
+     *
+     * - name : The name of the constraint
+     * - type : the type of the constraint. Generally `foreign`.
+     * - columns : the columns in the constraint on the.
+     * - references : A list of the table + all columns in the referenced table
+     * - update : The update action or null
+     * - delete : The delete action or null
+     *
+     * @param string $tableName The name of the table to describe foreign keys on.
+     * @return array
+     */
+    public function describeForeignKeys(string $tableName): array
+    {
+        $config = $this->_driver->config();
+        if (str_contains($tableName, '.')) {
+            [$config['schema'], $tableName] = explode('.', $tableName);
+        }
+        /** @var \Cake\Database\Schema\TableSchema $table */
+        $table = $this->_driver->newTableSchema($tableName);
+        // Add the columns because TableSchema needs them.
+        foreach ($this->describeColumns($tableName) as $column) {
+            $table->addColumn($column['name'], $column);
+        }
+
+        [$sql, $params] = $this->describeForeignKeySql($tableName, $config);
+        $statement = $this->_driver->execute($sql, $params);
+        foreach ($statement->fetchAll('assoc') as $row) {
+            $this->convertForeignKeyDescription($table, $row);
+        }
+        $keys = [];
+        foreach ($table->constraints() as $name) {
+            $key = $table->getConstraint($name);
+            $key['name'] = $name;
+            $keys[] = $key;
+        }
+
+        return $keys;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function describeForeignKeySql(string $tableName, array $config): array
@@ -603,6 +728,14 @@ WHERE 1=1 " . ($useOwner ? $ownerCondition : '') . $objectCondition . " ORDER BY
                 ':ownerParam' => $schema,
             ],
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function describeOptions(string $tableName): array
+    {
+        return [];
     }
 
     /**

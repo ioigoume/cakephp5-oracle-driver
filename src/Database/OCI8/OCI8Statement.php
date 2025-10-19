@@ -122,9 +122,9 @@ class OCI8Statement extends \PDOStatement implements \IteratorAggregate
      *
      * @param string $statement The SQL statement to convert.
      *
-     * @return string
+     * @return array
      */
-    public static function convertPositionalToNamedPlaceholders($statement)
+    public static function convertPositionalToNamedPlaceholders($statement): array
     {
         $count = 1;
         $inLiteral = false;
@@ -149,18 +149,22 @@ class OCI8Statement extends \PDOStatement implements \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function bindValue($param, $value, $type = null)
+    public function bindValue(string|int $param, mixed $value, int $type = PDO::PARAM_STR): bool
     {
         $this->_values[$param] = $value;
 
-        return $this->bindParam($param, $this->_values[$param], $type, null);
+        return $this->bindParam($param, $this->_values[$param], $type);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function bindParam($column, &$variable, $type = null, $length = null, $driverData = null)
-    {
+    public function bindParam(
+        string|int $column, mixed &$variable,
+        int $type = PDO::PARAM_STR,
+        int $maxLength = 0,
+        mixed $driverOptions = null
+    ): bool {
         $column = $this->_paramMap[$column] ?? $column;
 
         // @todo add additional type passing: as an option we could accept $type as array
@@ -176,8 +180,8 @@ class OCI8Statement extends \PDOStatement implements \IteratorAggregate
             $lob->writeTemporary($variable, OCI_TEMP_BLOB);
 
             return oci_bind_by_name($this->_sth, $column, $lob, -1, OCI_B_BLOB);
-        } elseif ($length !== null) {
-            return oci_bind_by_name($this->_sth, $column, $variable, $length);
+        } elseif ($maxLength !== null) {
+            return oci_bind_by_name($this->_sth, $column, $variable, $maxLength);
         }
 
         return oci_bind_by_name($this->_sth, $column, $variable);
@@ -186,7 +190,7 @@ class OCI8Statement extends \PDOStatement implements \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function closeCursor()
+    public function closeCursor(): bool
     {
         return true;
     }
@@ -204,7 +208,7 @@ class OCI8Statement extends \PDOStatement implements \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function columnCount()
+    public function columnCount(): int
     {
         return oci_num_fields($this->_sth);
     }
@@ -212,7 +216,7 @@ class OCI8Statement extends \PDOStatement implements \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function errorCode()
+    public function errorCode(): string
     {
         $error = oci_error($this->_sth);
         if ($error !== false) {
@@ -227,7 +231,7 @@ class OCI8Statement extends \PDOStatement implements \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function errorInfo()
+    public function errorInfo(): array
     {
         return oci_error($this->_sth);
     }
@@ -235,7 +239,7 @@ class OCI8Statement extends \PDOStatement implements \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function execute($params = null)
+    public function execute(?array $params = null): bool
     {
         if ($params) {
             $hasZeroIndex = array_key_exists(0, $params);
@@ -269,15 +273,15 @@ class OCI8Statement extends \PDOStatement implements \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function fetch($fetchMode = null, $orientation = null, $offset = null)
+    public function fetch(int $mode = PDO::FETCH_DEFAULT, int $cursorOrientation = PDO::FETCH_ORI_NEXT, int $cursorOffset = 0): mixed
     {
         $toLowercase = ($this->getAttribute(PDO::ATTR_CASE) == PDO::CASE_LOWER);
         $nullToString = ($this->getAttribute(PDO::ATTR_ORACLE_NULLS) == PDO::NULL_TO_STRING);
         $nullEmptyString = ($this->getAttribute(PDO::ATTR_ORACLE_NULLS) == PDO::NULL_EMPTY_STRING);
 
-        $fetchMode = $fetchMode ?: $this->_defaultFetchMode;
+        $mode = $mode ?: $this->_defaultFetchMode;
 
-        switch ($fetchMode) {
+        switch ($mode) {
             case PDO::FETCH_BOTH:
                 $rs = oci_fetch_array($this->_sth);
                 if ($rs === false) {
@@ -356,14 +360,14 @@ class OCI8Statement extends \PDOStatement implements \IteratorAggregate
                     $rs = array_change_key_case($rs);
                 }
 
-                if ($fetchMode === PDO::FETCH_INTO) {
+                if ($mode === PDO::FETCH_INTO) {
                     if (is_object($this->_fetchIntoObject)) {
                         $object = $this->_fetchIntoObject;
                     } else {
                         return false;
                     }
                 } else {
-                    if ($fetchMode === PDO::FETCH_OBJ) {
+                    if ($mode === PDO::FETCH_OBJ) {
                         $className = '\stdClass';
                         $arguments = [];
                     } else {
@@ -401,31 +405,31 @@ class OCI8Statement extends \PDOStatement implements \IteratorAggregate
      * {@inheritdoc}
      */
     public function fetchAll(int $mode = \PDO::FETCH_DEFAULT, ...$args): array
-	{
-		$this->setFetchMode($mode, ...$args);
+    {
+        $this->setFetchMode($mode, ...$args);
 
-		$this->_results = [];
+        $this->_results = [];
 
-		while ($row = $this->fetch($mode)) {
-			if (is_array($row) && is_resource(reset($row))) {
-				$stmt = new OCI8Statement($this->_dbh, reset($row), $this->_conn);
-				$stmt->execute();
-				$stmt->setFetchMode($mode, ...$args);
-				while ($rs = $stmt->fetch($mode)) {
-					$this->_results[] = $rs;
-				}
-			} else {
-				$this->_results[] = $row;
-			}
-		}
+        while ($row = $this->fetch($mode)) {
+            if (is_array($row) && is_resource(reset($row))) {
+                $stmt = new OCI8Statement($this->_dbh, reset($row), $this->_conn);
+                $stmt->execute();
+                $stmt->setFetchMode($mode, ...$args);
+                while ($rs = $stmt->fetch($mode)) {
+                    $this->_results[] = $rs;
+                }
+            } else {
+                $this->_results[] = $row;
+            }
+        }
 
-		return $this->_results;
-	}
+        return $this->_results;
+    }
 
     /**
      * {@inheritdoc}
      */
-    public function fetchColumn($columnIndex = 0)
+    public function fetchColumn(int $column = 0): mixed
     {
         $row = oci_fetch_array($this->_sth, OCI_NUM | OCI_RETURN_NULLS | OCI_RETURN_LOBS);
 
@@ -433,13 +437,13 @@ class OCI8Statement extends \PDOStatement implements \IteratorAggregate
             return false;
         }
 
-        return $row[$columnIndex] ?? null;
+        return $row[$column] ?? null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rowCount()
+    public function rowCount(): int
     {
         if (is_resource($this->_sth)) {
             return oci_num_rows($this->_sth);
@@ -454,6 +458,7 @@ class OCI8Statement extends \PDOStatement implements \IteratorAggregate
      * @param string $attribute Attribute id.
      * @return mixed The attribute value.
      */
+    #[\ReturnTypeWillChange]
     public function getAttribute($attribute)
     {
         return $this->_conn->getConfig((string)$attribute);
@@ -469,55 +474,55 @@ class OCI8Statement extends \PDOStatement implements \IteratorAggregate
      * @return bool TRUE on success or FALSE on failure.
      */
     public function setFetchMode(int $mode, ...$args): bool
-	{
-		$this->_defaultFetchMode = $mode;
+    {
+        $this->_defaultFetchMode = $mode;
 
-		switch ($mode) {
-			case \PDO::FETCH_ASSOC:
-			case \PDO::FETCH_NUM:
-			case \PDO::FETCH_BOTH:
-			case \PDO::FETCH_OBJ:
-				$this->_fetchMode = $mode;
-				$this->_fetchColumnNumber = 0;
-				$this->_fetchClassName = '\stdClass';
-				$this->_fetchArguments = [];
-				$this->_fetchIntoObject = null;
-				break;
+        switch ($mode) {
+            case \PDO::FETCH_ASSOC:
+            case \PDO::FETCH_NUM:
+            case \PDO::FETCH_BOTH:
+            case \PDO::FETCH_OBJ:
+                $this->_fetchMode = $mode;
+                $this->_fetchColumnNumber = 0;
+                $this->_fetchClassName = '\stdClass';
+                $this->_fetchArguments = [];
+                $this->_fetchIntoObject = null;
+                break;
 
-			case \PDO::FETCH_CLASS:
-			case \PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE:
-				$this->_fetchMode = $mode;
-				$this->_fetchColumnNumber = 0;
-				$this->_fetchClassName = $args[0] ?? '\stdClass';
-				$this->_fetchArguments = $args[1] ?? [];
-				$this->_fetchIntoObject = null;
-				break;
+            case \PDO::FETCH_CLASS:
+            case \PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE:
+                $this->_fetchMode = $mode;
+                $this->_fetchColumnNumber = 0;
+                $this->_fetchClassName = $args[0] ?? '\stdClass';
+                $this->_fetchArguments = $args[1] ?? [];
+                $this->_fetchIntoObject = null;
+                break;
 
-			case \PDO::FETCH_INTO:
-				$object = $args[0] ?? null;
-				if (!is_object($object)) {
-					throw new OCI8Exception('$param must be an instance of an object');
-				}
-				$this->_fetchMode = $mode;
-				$this->_fetchColumnNumber = 0;
-				$this->_fetchClassName = '\stdClass';
-				$this->_fetchArguments = [];
-				$this->_fetchIntoObject = $object;
-				break;
+            case \PDO::FETCH_INTO:
+                $object = $args[0] ?? null;
+                if (!is_object($object)) {
+                    throw new OCI8Exception('$param must be an instance of an object');
+                }
+                $this->_fetchMode = $mode;
+                $this->_fetchColumnNumber = 0;
+                $this->_fetchClassName = '\stdClass';
+                $this->_fetchArguments = [];
+                $this->_fetchIntoObject = $object;
+                break;
 
-			case \PDO::FETCH_COLUMN:
-				$columnIndex = $args[0] ?? 0;
-				$this->_fetchMode = $mode;
-				$this->_fetchColumnNumber = (int)$columnIndex;
-				$this->_fetchClassName = '\stdClass';
-				$this->_fetchArguments = [];
-				$this->_fetchIntoObject = null;
-				break;
+            case \PDO::FETCH_COLUMN:
+                $columnIndex = $args[0] ?? 0;
+                $this->_fetchMode = $mode;
+                $this->_fetchColumnNumber = (int)$columnIndex;
+                $this->_fetchClassName = '\stdClass';
+                $this->_fetchArguments = [];
+                $this->_fetchIntoObject = null;
+                break;
 
-			default:
-				throw new OCI8Exception('Requested fetch mode is not supported by this implementation');
-		}
+            default:
+                throw new OCI8Exception('Requested fetch mode is not supported by this implementation');
+        }
 
-		return true;
-	}
+        return true;
+    }
 }
