@@ -244,6 +244,14 @@ abstract class OracleBase extends Driver
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function config(): array
+    {
+        return $this->_config;
+    }
+
+    /**
      * Converts positional (?) into named placeholders (:param<num>).
      *
      * Oracle does not support positional parameters, hence this method converts all
