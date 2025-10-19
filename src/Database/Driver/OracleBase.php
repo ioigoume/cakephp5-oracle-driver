@@ -21,8 +21,6 @@ use Cake\Http\Exception\NotImplementedException;
 use Cake\Log\Log;
 use Ioigoume\OracleDriver\Config\ConfigTrait;
 use Ioigoume\OracleDriver\Database\Dialect\OracleDialectTrait;
-use Ioigoume\OracleDriver\Database\Oracle12Compiler;
-use Ioigoume\OracleDriver\Database\OracleCompiler;
 use Ioigoume\OracleDriver\Database\Statement\OracleStatement;
 use PDO;
 
@@ -100,8 +98,20 @@ abstract class OracleBase extends Driver
 
         $config['init'][] = "ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD HH24:MI:SS' NLS_TIMESTAMP_FORMAT='YYYY-MM-DD HH24:MI:SS' NLS_TIMESTAMP_TZ_FORMAT='YYYY-MM-DD HH24:MI:SS'";
 
+        if (!empty($config['case']) && !isset($config['flags'][PDO::ATTR_CASE])) {
+            $desired = strtolower((string)$config['case']);
+            if ($desired === 'lower') {
+                $config['flags'][PDO::ATTR_CASE] = PDO::CASE_LOWER;
+            } elseif ($desired === 'upper') {
+                $config['flags'][PDO::CASE_UPPER];
+            } elseif ($desired === 'natural') {
+                $config['flags'][PDO::ATTR_CASE] = PDO::CASE_NATURAL;
+            }
+        }
+
         $config['flags'] += [
-            // PDO::ATTR_CASE => PDO::CASE_LOWER, // @todo move to config setting
+            // Moved to configuration
+            // PDO::ATTR_CASE => PDO::CASE_LOWER,
             PDO::NULL_EMPTY_STRING => true,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_PERSISTENT => empty($config['persistent']) ? false : $config['persistent'],
@@ -112,10 +122,10 @@ abstract class OracleBase extends Driver
         $this->_connect($dsn, $config);
 
         if (!empty($config['init']) && $this->_connection) {
-    	    foreach ((array)$config['init'] as $command) {
+            foreach ((array)$config['init'] as $command) {
                 $this->_connection->exec($command);
-    	    }
-	}
+            }
+        }
 
     }
 
@@ -203,7 +213,7 @@ abstract class OracleBase extends Driver
             && !$query->isBufferedResultsEnabled()
             || $disableBuffer
         ) {
-                $statement->bufferResults(false);
+            $statement->bufferResults(false);
         }
 
         return $statement;
@@ -214,16 +224,12 @@ abstract class OracleBase extends Driver
      */
     public function compileQuery(Query $query, ValueBinder $generator): string
     {
-        if ($this->_serverVersion !== null && $this->_serverVersion >= 12) {
-            $processor = new Oracle12Compiler();
-        } else {
-            $processor = new OracleCompiler();
-        }
+        $processor = $this->newCompiler();
 
-        $translator = $this->queryTranslator($query->type());
-        $query = $translator($query);
+//        $translator = $this->queryTranslator($query->type());
+//        $query = $translator($query);
 
-        return [$query, $processor->compile($query, $generator)];
+        return $processor->compile($query, $generator);
     }
 
     /**
@@ -294,25 +300,26 @@ abstract class OracleBase extends Driver
      */
     public function lastInsertId(?string $table = null): string
     {
-        [$schema, $table] = explode('.', $table);
-        if (!isset($table)) {
-            $table = $schema;
-            $schema = null;
+        $schema = null;
+        if ($table !== null && str_contains($table, '.')) {
+            [$schema, $table] = explode('.', $table, 2);
         }
         if ($this->useAutoincrement()) {
-            return $this->_autoincrementSequenceId($table, $column, $schema);
-        } else {
-            $sequenceName = 'seq_' . strtolower($table);
-            $this->connect();
-            $statement = $this->_connection->query("SELECT {$sequenceName}.CURRVAL FROM DUAL");
-            $result = $statement->fetch(PDO::FETCH_NUM);
-            if (count($result) === 0) {
-                return $this->_autoincrementSequenceId($table, $column, $schema);
-            }
-
-            return $result[0];
+            return (string)$this->_autoincrementSequenceId($table, null, $schema);
         }
+
+        $sequenceName = 'seq_' . strtolower((string)$table);
+        $this->connect();
+        $statement = $this->_connection->query("SELECT {$sequenceName}.CURRVAL FROM DUAL");
+        $result = $statement->fetch(PDO::FETCH_NUM);
+
+        if (!$result || !isset($result[0]) || count($result) === 0) {
+            return (string)$this->_autoincrementSequenceId($table, null, $schema);
+        }
+
+        return (string)$result[0];
     }
+
 
     /**
      * @inheritDoc
@@ -387,29 +394,66 @@ abstract class OracleBase extends Driver
      * @param string $table Table name.
      * @param string $column Column name
      * @param string $schema Schema name
-     * @return int
+     * @return string
      */
-    protected function _autoincrementSequenceId(?string $table, ?string $column, ?string $schema)
+    protected function _autoincrementSequenceId(?string $table, ?string $column, ?string $schema): ?string
     {
+        // Normalize names depending on auto-quoting
         if ($this->isAutoQuotingEnabled()) {
             $tableName = $table;
             $columnName = $column;
             $schemaName = $schema;
         } else {
-            $tableName = strtoupper($table);
-            $columnName = strtoupper($column);
-            $schemaName = strtoupper($schema);
+            $tableName = $table !== null ? strtoupper($table) : null;
+            $columnName = $column !== null ? strtoupper($column) : null;
+            $schemaName = $schema !== null ? strtoupper($schema) : null;
         }
-        $query = "select sequence_name from all_tab_identity_cols where table_name='$tableName' and column_name='$columnName'".(isset($schemaName) ? " and owner='$schemaName'" : "");
-        $this->connect();
-        $seqStatement = $this->_connection->query($query);
-        $result = $seqStatement->fetch(PDO::FETCH_NUM);
 
-        $sequenceName = $result[0];
+        if ($tableName === null) {
+            throw new \InvalidArgumentException('Table name is required');
+        }
 
-        $statement = $this->_connection->query("SELECT ".(isset($schemaName) ? "{$schemaName}." : "")."{$sequenceName}.CURRVAL FROM DUAL");
-        $result = $statement->fetch(PDO::FETCH_NUM);
+        // If column not provided, discover the identity column
+        if ($columnName === null) {
+            $sql = 'SELECT column_name FROM all_tab_identity_cols WHERE table_name = :table'
+                . ($schemaName !== null ? ' AND owner = :owner' : '');
+            $stmt = $this->_connection->prepare($sql);
+            $stmt->bindValue(':table', $tableName);
+            if ($schemaName !== null) {
+                $stmt->bindValue(':owner', $schemaName);
+            }
+            $stmt->execute();
+            $columnName = $stmt->fetchColumn();
+            if ($columnName === false || $columnName === null) {
+                return null; // or throw RuntimeException('Identity column not found')
+            }
+        }
 
-        return $result[0];
+        // Get sequence name for the identity column
+        $seqSql = 'SELECT sequence_name FROM all_tab_identity_cols WHERE table_name = :table AND column_name = :column'
+            . ($schemaName !== null ? ' AND owner = :owner' : '');
+        $seqStmt = $this->_connection->prepare($seqSql);
+        $seqStmt->bindValue(':table', $tableName);
+        $seqStmt->bindValue(':column', $columnName);
+        if ($schemaName !== null) {
+            $seqStmt->bindValue(':owner', $schemaName);
+        }
+        $seqStmt->execute();
+        $sequenceName = $seqStmt->fetchColumn();
+
+        if ($sequenceName === false || $sequenceName === null) {
+            return null; // or throw RuntimeException('Sequence for identity column not found')
+        }
+
+        // Fetch CURRVAL (assumes an INSERT happened in this session so CURRVAL is defined)
+        $currSql = sprintf(
+            'SELECT %s%s.CURRVAL FROM DUAL',
+            $schemaName !== null ? $schemaName . '.' : '',
+            $sequenceName
+        );
+        $currStmt = $this->_connection->query($currSql);
+        $currVal = $currStmt->fetchColumn();
+
+        return $currVal !== false && $currVal !== null ? (string)$currVal : null;
     }
 }

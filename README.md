@@ -67,8 +67,9 @@ return [
             'encoding' => '',               // Database charset (default same as database charset)
             'init' => [],                   // Array of queries executed at connection
             'cacheMetadata' => true,        // Enable cakephp schema caching
-            'server_version' => 12,        // Oracle server numeric version ex.: 11,12,19
+            'server_version' => 12,         // Oracle server numeric version ex.: 11,12,19
             'autoincrement' => true,        // Enable autoincrement insteadof custom triggers in case of oracle 12+
+            'case' => 'lower' | 'upper' | 'natural' // Oracle case sensitivity
         ]
     ]
 ];
@@ -90,6 +91,38 @@ The above array format is translated into Oracle's
 `\Ioigoume\OracleDriver\Database\Driver\OracleBase::getDSN()`.
 
 [oracle-ecn]: https://docs.oracle.com/cd/B19306_01/network.102/b14212/naming.htm#sthref783
+
+## Case handling
+
+### Semantic option
+
+Use the semantic case option to control how column names are cased in fetched rows.
+
+case => 'lower' | 'upper' | 'natural'
+```php
+[
+    'oracle' => [
+        'driver' => Ioigoume\OracleDriver\Database\Driver\Oracle::class, 
+        //...
+        'case' => 'lower', // or 'upper' or 'natural',
+    ],
+]
+``` 
+
+### Raw flags
+
+Alternatively, set the PDO flag directly.
+
+flags => [PDO::ATTR_CASE => PDO::CASE_LOWER]
+```php
+[ 
+    'oracle' => [
+        'driver' => Ioigoume\OracleDriver\Database\Driver\Oracle::class,
+        // ...
+        'flags' => [ PDO::ATTR_CASE => PDO::CASE_LOWER, // or PDO::CASE_UPPER / PDO::CASE_NATURAL
+    ],
+]
+```
 
 Documentation
 -------------

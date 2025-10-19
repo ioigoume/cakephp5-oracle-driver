@@ -21,7 +21,7 @@ class OracleCompiler extends QueryCompiler
     /**
      * {@inheritDoc}
      */
-    protected $_selectParts = [
+    protected array $_selectParts = [
         'select',
         'from',
         'join',

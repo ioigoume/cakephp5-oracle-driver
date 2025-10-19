@@ -12,14 +12,14 @@ declare(strict_types=1);
  */
 namespace Ioigoume\OracleDriver\Database\Dialect;
 
-use Cake\Database\Expression\FunctionExpression;
-use Cake\Database\ExpressionInterface;
-use Cake\Database\Query\SelectQuery;
-use Cake\Database\Query\InsertQuery;
-use Cake\Database\QueryCompiler;
-use Cake\Database\Schema\SchemaDialect;
-use Cake\Database\Schema\BaseSchema;
 use Cake\Database\Driver\TupleComparisonTranslatorTrait;
+use Cake\Database\ExpressionInterface;
+use Cake\Database\Expression\FunctionExpression;
+use Cake\Database\QueryCompiler;
+use Cake\Database\Query\InsertQuery;
+use Cake\Database\Query\SelectQuery;
+use Cake\Database\Schema\BaseSchema;
+use Cake\Database\Schema\SchemaDialect;
 use Ioigoume\OracleDriver\Database\Expression\SimpleExpression;
 use Ioigoume\OracleDriver\Database\Oracle12Compiler;
 use Ioigoume\OracleDriver\Database\OracleCompiler;
@@ -106,7 +106,7 @@ trait OracleDialectTrait
         $query->limit(null)
             ->offset(null);
 
-        $outer = new Query($query->getConnection());
+        $outer = $query->getConnection()->selectQuery();
         $outer
             ->select([
                 'cake_paging.*',
@@ -114,7 +114,7 @@ trait OracleDialectTrait
             ])
             ->from(['cake_paging' => $query]);
 
-        $outer2 = new Query($query->getConnection());
+        $outer2 = $query->getConnection()->selectQuery();
         $outer2->select('*')
             ->from(['cake_paging_out' => $outer]);
 

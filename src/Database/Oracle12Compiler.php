@@ -25,7 +25,7 @@ class Oracle12Compiler extends QueryCompiler
      *
      * @var array
      */
-    protected $_templates = [
+    protected array $_templates = [
         'delete' => 'DELETE',
         'where' => ' WHERE %s',
         'group' => ' GROUP BY %s ',
@@ -41,7 +41,7 @@ class Oracle12Compiler extends QueryCompiler
      *
      * @var array
      */
-    protected $_selectParts = [
+    protected array $_selectParts = [
         'select',
         'from',
         'join',
