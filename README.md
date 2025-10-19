@@ -119,7 +119,7 @@ flags => [PDO::ATTR_CASE => PDO::CASE_LOWER]
     'oracle' => [
         'driver' => Ioigoume\OracleDriver\Database\Driver\Oracle::class,
         // ...
-        'flags' => [ PDO::ATTR_CASE => PDO::CASE_LOWER, // or PDO::CASE_UPPER / PDO::CASE_NATURAL
+        'flags' => [ PDO::ATTR_CASE => PDO::CASE_LOWER ], // or PDO::CASE_UPPER / PDO::CASE_NATURAL
     ],
 ]
 ```

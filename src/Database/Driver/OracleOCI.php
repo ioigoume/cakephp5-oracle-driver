@@ -19,8 +19,25 @@ use Cake\Database\DriverFeatureEnum;
 
 class OracleOCI extends OracleBase
 {
+
     /**
-     * @var bool|mixed
+     * Starting quote character used for quoted identifiers
+     *
+     * @var string
+     */
+    protected string $_startQuote = '"';
+
+    /**
+     * Ending quote character used for quoted identifiers
+     *
+     * @var string
+     */
+    protected string $_endQuote = '"';
+
+    /**
+     * Whether a connection to the database is established
+     *
+     * @var bool
      */
     public $connected;
 
@@ -68,15 +85,21 @@ class OracleOCI extends OracleBase
     }
 
     /**
-     * Should if driver support OCI layer.
+     * Checks if driver supports OCI layer
      *
-     * @return bool
+     * @return bool True as this driver uses OCI8
      */
     public function isOci()
     {
         return true;
     }
 
+    /**
+     * Checks if this driver supports specific database feature
+     *
+     * @param \Cake\Database\DriverFeatureEnum $feature Feature to check support for
+     * @return bool True if feature is supported
+     */
     public function supports(DriverFeatureEnum $feature): bool
     {
         return true;

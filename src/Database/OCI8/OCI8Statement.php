@@ -288,7 +288,25 @@ class OCI8Statement extends \PDOStatement implements \IteratorAggregate
                     return false;
                 }
                 if ($toLowercase) {
-                    $rs = array_change_key_case($rs);
+                    $rsTmp = array_change_key_case($rs);
+
+                    if (is_array($rsTmp)) {
+                        $looksLikeMeta =
+                            (array_key_exists('name', $rsTmp) || array_key_exists('column_name', $rsTmp)) &&
+                            (array_key_exists('type', $rsTmp) || array_key_exists('data_type', $rsTmp));
+
+                        if ($looksLikeMeta) {
+                            foreach (['name', 'column_name', 'table', 'table_name', 'owner'] as $idKey) {
+                                if (isset($rsTmp[$idKey]) && is_string($rsTmp[$idKey])) {
+                                    $rsTmp[$idKey] = strtolower($rsTmp[$idKey]);
+                                    $idKeyUpperCase = strtoupper($idKey);
+                                    if (isset($rs[$idKeyUpperCase])) {
+                                        $rs[$idKeyUpperCase] = $rsTmp[$idKey];
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
                 if ($this->_returnLobs && is_array($rs)) {
                     foreach ($rs as $field => $value) {
@@ -306,7 +324,25 @@ class OCI8Statement extends \PDOStatement implements \IteratorAggregate
                     return false;
                 }
                 if ($toLowercase) {
-                    $rs = array_change_key_case($rs);
+                    $rsTmp = array_change_key_case($rs);
+
+                    if (is_array($rsTmp)) {
+                        $looksLikeMeta =
+                            (array_key_exists('name', $rsTmp) || array_key_exists('column_name', $rsTmp)) &&
+                            (array_key_exists('type', $rsTmp) || array_key_exists('data_type', $rsTmp));
+
+                        if ($looksLikeMeta) {
+                            foreach (['name', 'column_name', 'table', 'table_name', 'owner'] as $idKey) {
+                                if (isset($rsTmp[$idKey]) && is_string($rsTmp[$idKey])) {
+                                    $rsTmp[$idKey] = strtolower($rsTmp[$idKey]);
+                                    $idKeyUpperCase = strtoupper($idKey);
+                                    if (isset($rs[$idKeyUpperCase])) {
+                                        $rs[$idKeyUpperCase] = $rsTmp[$idKey];
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
                 if ($this->_returnLobs && is_array($rs)) {
                     foreach ($rs as $field => $value) {
@@ -357,7 +393,25 @@ class OCI8Statement extends \PDOStatement implements \IteratorAggregate
                     return false;
                 }
                 if ($toLowercase) {
-                    $rs = array_change_key_case($rs);
+                    $rsTmp = array_change_key_case($rs);
+
+                    if (is_array($rsTmp)) {
+                        $looksLikeMeta =
+                            (array_key_exists('name', $rsTmp) || array_key_exists('column_name', $rsTmp)) &&
+                            (array_key_exists('type', $rsTmp) || array_key_exists('data_type', $rsTmp));
+
+                        if ($looksLikeMeta) {
+                            foreach (['name', 'column_name', 'table', 'table_name', 'owner'] as $idKey) {
+                                if (isset($rsTmp[$idKey]) && is_string($rsTmp[$idKey])) {
+                                    $rsTmp[$idKey] = strtolower($rsTmp[$idKey]);
+                                    $idKeyUpperCase = strtoupper($idKey);
+                                    if (isset($rs[$idKeyUpperCase])) {
+                                        $rs[$idKeyUpperCase] = $rsTmp[$idKey];
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 if ($mode === PDO::FETCH_INTO) {

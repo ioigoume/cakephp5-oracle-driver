@@ -103,7 +103,7 @@ abstract class OracleBase extends Driver
             if ($desired === 'lower') {
                 $config['flags'][PDO::ATTR_CASE] = PDO::CASE_LOWER;
             } elseif ($desired === 'upper') {
-                $config['flags'][PDO::CASE_UPPER];
+                $config['flags'][PDO::ATTR_CASE] = [PDO::CASE_UPPER];
             } elseif ($desired === 'natural') {
                 $config['flags'][PDO::ATTR_CASE] = PDO::CASE_NATURAL;
             }
