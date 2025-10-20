@@ -226,8 +226,7 @@ abstract class OracleBase extends Driver
     {
         $processor = $this->newCompiler();
 
-//        $translator = $this->queryTranslator($query->type());
-//        $query = $translator($query);
+        $query = $this->transformQuery($query);
 
         return $processor->compile($query, $generator);
     }
