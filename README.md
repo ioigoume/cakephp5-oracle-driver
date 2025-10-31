@@ -1,8 +1,8 @@
 # CakePHP 5 Driver for Oracle Database
 
-[![Total Downloads](http://poser.pugx.org/phpunit/phpunit/downloads)](https://packagist.org/packages/phpunit/phpunit)
-[![PHP Version Require](http://poser.pugx.org/phpunit/phpunit/require/php)](https://packagist.org/packages/phpunit/phpunit)
-[![Latest Stable Version](http://poser.pugx.org/phpunit/phpunit/v)](https://packagist.org/packages/phpunit/phpunit)
+[![Latest Stable Version](http://poser.pugx.org/ioigoume/cakephp5-oracle-driver/v)](https://packagist.org/packages/ioigoume/cakephp5-oracle-driver)
+[![Total Downloads](http://poser.pugx.org/ioigoume/cakephp5-oracle-driver/downloads)](https://packagist.org/packages/ioigoume/cakephp5-oracle-driver)
+[![PHP Version Require](http://poser.pugx.org/ioigoume/cakephp5-oracle-driver/require/php)](https://packagist.org/packages/ioigoume/cakephp5-oracle-driver)
 
 ## Installation
 
