@@ -13,5 +13,5 @@ use Cake\Database\TypeFactory;
 use Ioigoume\OracleDriver\Database\Type\CursorType;
 use Ioigoume\OracleDriver\Database\Type\BoolType;
 
-TypeFactory::set('cursor', new CursorType());
-TypeFactory::set('boolean', new BoolType());
+TypeFactory::map('cursor', CursorType::class);
+TypeFactory::map('boolean', BoolType::class);
